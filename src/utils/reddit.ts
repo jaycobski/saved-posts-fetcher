@@ -60,12 +60,13 @@ export const fetchSavedPosts = async (accessToken: string): Promise<RedditPost[]
   try {
     console.log("Starting API request with token:", accessToken.substring(0, 5) + "...");
     
-    const response = await fetch("https://oauth.reddit.com/user/me/saved.json?limit=100&raw_json=1", {
+    const response = await fetch("https://oauth.reddit.com/user/me/saved.json", {
       headers: {
         "Authorization": `Bearer ${accessToken}`,
-        "User-Agent": "saved-posts-fetcher:v1.0.0",
-        "Content-Type": "application/json",
+        "User-Agent": "web:saved-posts-fetcher:v1.0.0",
+        "Accept": "application/json",
       },
+      credentials: "omit"
     });
 
     console.log("Response status:", response.status);
