@@ -1,6 +1,6 @@
 import { toast } from "sonner";
 
-const CLIENT_ID = "8uETlZiCEaiuZbLXYeudfg"; // Reddit installed app client ID
+const CLIENT_ID = "8uETlZiCEaiuZbLXYeudfg";
 const REDIRECT_URI = import.meta.env.PROD 
   ? "https://saved-posts-fetcher.lovable.app/"
   : "http://localhost:8080/";
@@ -58,24 +58,27 @@ export const handleRedditCallback = (hash: string) => {
 
 export const fetchSavedPosts = async (accessToken: string): Promise<RedditPost[]> => {
   try {
-    console.log("Fetching saved posts with token:", accessToken);
-    const response = await fetch("https://oauth.reddit.com/user/me/saved?limit=100", {
+    console.log("Starting API request with token:", accessToken.substring(0, 5) + "...");
+    
+    const response = await fetch("https://oauth.reddit.com/user/me/saved", {
       headers: {
         "Authorization": `Bearer ${accessToken}`,
-        "User-Agent": "web:saved-posts-fetcher:v1.0.0",
+        "User-Agent": "web:saved-posts-fetcher:v1.0.0 (by /u/your-username)",
+        "Accept": "application/json",
       },
     });
 
     console.log("Response status:", response.status);
-    
+    console.log("Response headers:", Object.fromEntries(response.headers.entries()));
+
     if (!response.ok) {
       const errorText = await response.text();
-      console.error("API Error:", errorText);
-      throw new Error(`Failed to fetch saved posts: ${response.status} ${errorText}`);
+      console.error("API Error Response:", errorText);
+      throw new Error(`API Error (${response.status}): ${errorText}`);
     }
 
     const data = await response.json();
-    console.log("Received data:", data);
+    console.log("API Response data structure:", Object.keys(data));
 
     if (!data.data?.children) {
       console.error("Unexpected API response format:", data);
@@ -95,6 +98,6 @@ export const fetchSavedPosts = async (accessToken: string): Promise<RedditPost[]
   } catch (error) {
     console.error("Error fetching saved posts:", error);
     toast.error("Failed to fetch saved posts");
-    return [];
+    throw error;
   }
 };
