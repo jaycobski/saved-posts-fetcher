@@ -1,6 +1,6 @@
 import { toast } from "sonner";
 
-const CLIENT_ID = "C0bKNKqDSpFAJ8zX8pa07A";
+const CLIENT_ID = "8uETlZiCEaiuZbLXYeudfg"; // Reddit installed app client ID
 const REDIRECT_URI = import.meta.env.PROD 
   ? "https://lovable.dev/projects/59dec005-bbd9-4ac1-825c-74ea273de4f6"
   : "http://localhost:8080/";
