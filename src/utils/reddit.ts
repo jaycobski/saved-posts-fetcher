@@ -1,14 +1,9 @@
 import { toast } from "sonner";
 
-<<<<<<< HEAD
-const CLIENT_ID = "8uETlZiCEaiuZbLXYeudfg"; // Your Reddit app client ID
-const REDIRECT_URI = "http://localhost:8080/"; // During development
-=======
 const CLIENT_ID = "C0bKNKqDSpFAJ8zX8pa07A";
 const REDIRECT_URI = import.meta.env.PROD 
   ? "https://lovable.dev/projects/59dec005-bbd9-4ac1-825c-74ea273de4f6"
   : "http://localhost:8080/";
->>>>>>> 987e50dfd826436a6a0fa2fc11d81aca85f7b28f
 const SCOPES = ["history", "identity"];
 
 export interface RedditPost {
