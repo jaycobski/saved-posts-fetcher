@@ -25,15 +25,16 @@ export const initiateRedditAuth = () => {
   const state = generateRandomString();
   localStorage.setItem("reddit_state", state);
 
-  const authUrl = new URL("https://www.reddit.com/api/v1/authorize");
-  authUrl.searchParams.append("client_id", CLIENT_ID);
-  authUrl.searchParams.append("response_type", "token");
-  authUrl.searchParams.append("state", state);
-  authUrl.searchParams.append("redirect_uri", REDIRECT_URI);
-  authUrl.searchParams.append("duration", "temporary");
-  authUrl.searchParams.append("scope", SCOPES.join(" "));
+  const params = new URLSearchParams({
+    client_id: CLIENT_ID,
+    response_type: "token",
+    state: state,
+    redirect_uri: REDIRECT_URI,
+    duration: "temporary",
+    scope: SCOPES.join(" ")
+  });
 
-  window.location.href = authUrl.toString();
+  window.location.href = `https://www.reddit.com/api/v1/authorize?${params.toString()}`;
 };
 
 export const handleRedditCallback = (hash: string) => {
