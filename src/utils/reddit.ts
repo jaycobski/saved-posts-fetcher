@@ -60,11 +60,26 @@ export const fetchSavedPosts = async (accessToken: string): Promise<RedditPost[]
   try {
     console.log("Starting API request with token:", accessToken.substring(0, 5) + "...");
     
-    const response = await fetch("https://oauth.reddit.com/user/me/saved?limit=100&raw_json=1", {
+    // First, get the username
+    const userResponse = await fetch("https://oauth.reddit.com/api/v1/me", {
       headers: {
         "Authorization": `Bearer ${accessToken}`,
         "User-Agent": "web:saved-posts-fetcher:v1.0.0 (by /u/lovable_dev)",
-        "Content-Type": "application/json",
+      }
+    });
+
+    if (!userResponse.ok) {
+      throw new Error(`Failed to fetch user info: ${userResponse.status}`);
+    }
+
+    const userData = await userResponse.json();
+    const username = userData.name;
+
+    // Then fetch saved posts using the correct endpoint format
+    const response = await fetch(`https://oauth.reddit.com/user/${username}/saved?limit=100&raw_json=1`, {
+      headers: {
+        "Authorization": `Bearer ${accessToken}`,
+        "User-Agent": "web:saved-posts-fetcher:v1.0.0 (by /u/lovable_dev)",
       }
     });
 
