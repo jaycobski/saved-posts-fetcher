@@ -1,6 +1,6 @@
 import { toast } from "sonner";
 
-const CLIENT_ID = "YOUR_CLIENT_ID"; // Replace with your Reddit app client ID
+const CLIENT_ID = "C0bKNKqDSpFAJ8zX8pa07A"; // Replace with your Reddit app client ID
 const REDIRECT_URI = window.location.origin + "/";
 const SCOPES = ["history", "identity"];
 
