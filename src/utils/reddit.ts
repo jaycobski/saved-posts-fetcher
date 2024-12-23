@@ -58,17 +58,30 @@ export const handleRedditCallback = (hash: string) => {
 
 export const fetchSavedPosts = async (accessToken: string): Promise<RedditPost[]> => {
   try {
-    const response = await fetch("https://oauth.reddit.com/user/me/saved", {
+    console.log("Fetching saved posts with token:", accessToken);
+    const response = await fetch("https://oauth.reddit.com/user/me/saved?limit=100", {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        "Authorization": `Bearer ${accessToken}`,
+        "User-Agent": "web:saved-posts-fetcher:v1.0.0",
       },
     });
 
+    console.log("Response status:", response.status);
+    
     if (!response.ok) {
-      throw new Error("Failed to fetch saved posts");
+      const errorText = await response.text();
+      console.error("API Error:", errorText);
+      throw new Error(`Failed to fetch saved posts: ${response.status} ${errorText}`);
     }
 
     const data = await response.json();
+    console.log("Received data:", data);
+
+    if (!data.data?.children) {
+      console.error("Unexpected API response format:", data);
+      throw new Error("Invalid API response format");
+    }
+
     return data.data.children.map((child: any) => ({
       id: child.data.id,
       title: child.data.title,
