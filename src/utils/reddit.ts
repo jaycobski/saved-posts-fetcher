@@ -1,7 +1,7 @@
 import { toast } from "sonner";
 
-const CLIENT_ID = "C0bKNKqDSpFAJ8zX8pa07A"; // Replace with your Reddit app client ID
-const REDIRECT_URI = window.location.origin + "/";
+const CLIENT_ID = "C0bKNKqDSpFAJ8zX8pa07A"; // Your Reddit app client ID
+const REDIRECT_URI = "http://localhost:8080/"; // During development
 const SCOPES = ["history", "identity"];
 
 export interface RedditPost {
